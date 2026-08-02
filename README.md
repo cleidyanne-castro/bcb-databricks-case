@@ -263,7 +263,7 @@ Idempotency is achieved through:
 
 ### Idempotency validation
 
-![Idempotency validation](./evidence/idempotency_validation.png)
+![Idempotency validation](./evidence/idempotency.png)
 
 ### Gold table sample
 
