@@ -1,0 +1,422 @@
+{
+  "datasets": [
+    {
+      "name": "5ce18bb0",
+      "displayName": "Monthly rates",
+      "config": {
+        "version": "1.1",
+        "source": "beanalytic_case.gold.interest_inflation_monthly",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a2274e67",
+      "displayName": "Latest monthly rates",
+      "queryLines": [
+        "SELECT\n",
+        "    reference_month,\n",
+        "    selic_monthly_effective_pct,\n",
+        "    ipca_monthly_pct,\n",
+        "    real_interest_monthly_pct\n",
+        "FROM beanalytic_case.gold.interest_inflation_monthly\n",
+        "ORDER BY reference_month DESC\n",
+        "LIMIT 1"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "6c1079b0",
+      "displayName": "Interest and Inflation Analysis",
+      "layout": [
+        {
+          "widget": {
+            "name": "monthly-selic-vs-ipca",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5ce18bb0",
+                  "fields": [
+                    {
+                      "name": "monthly(reference_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `reference_month`)"
+                    },
+                    {
+                      "name": "sum(selic_monthly_effective_pct)",
+                      "expression": "SUM(`selic_monthly_effective_pct`)"
+                    },
+                    {
+                      "name": "sum(ipca_monthly_pct)",
+                      "expression": "SUM(`ipca_monthly_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly SELIC vs IPCA"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(reference_month)",
+                  "displayName": "Reference month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "sum(selic_monthly_effective_pct)",
+                      "displayName": "Monthly SELIC"
+                    },
+                    {
+                      "fieldName": "sum(ipca_monthly_pct)",
+                      "displayName": "Monthly IPCA"
+                    }
+                  ],
+                  "axis": {
+                    "title": "Rate (%)"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "monthly-real-interest-rate",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5ce18bb0",
+                  "fields": [
+                    {
+                      "name": "monthly(reference_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `reference_month`)"
+                    },
+                    {
+                      "name": "sum(real_interest_monthly_pct)",
+                      "expression": "SUM(`real_interest_monthly_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly Real Interest Rate"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(reference_month)",
+                  "axis": {
+                    "title": "Reference month"
+                  },
+                  "displayName": "Monthly Real Interest",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(real_interest_monthly_pct)",
+                  "axis": {
+                    "title": "Real Interest Rate (%)"
+                  },
+                  "displayName": "Real interest rate (%)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "12-month-accumulated-rates",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5ce18bb0",
+                  "fields": [
+                    {
+                      "name": "monthly(reference_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `reference_month`)"
+                    },
+                    {
+                      "name": "sum(selic_accumulated_12m_pct)",
+                      "expression": "SUM(`selic_accumulated_12m_pct`)"
+                    },
+                    {
+                      "name": "sum(ipca_accumulated_12m_pct)",
+                      "expression": "SUM(`ipca_accumulated_12m_pct`)"
+                    },
+                    {
+                      "name": "sum(real_interest_accumulated_12m_pct)",
+                      "expression": "SUM(`real_interest_accumulated_12m_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "12-Month Accumulated Rates"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(reference_month)",
+                  "axis": {
+                    "title": "Reference Month"
+                  },
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "sum(selic_accumulated_12m_pct)",
+                      "displayName": "SELIC 12M"
+                    },
+                    {
+                      "fieldName": "sum(ipca_accumulated_12m_pct)",
+                      "displayName": "IPCA 12M"
+                    },
+                    {
+                      "fieldName": "sum(real_interest_accumulated_12m_pct)",
+                      "displayName": "Real Interest 12M"
+                    }
+                  ],
+                  "axis": {
+                    "title": "Accumulated Rate (%)"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "latest-selic-monthly-effective",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a2274e67",
+                  "fields": [
+                    {
+                      "name": "sum(selic_monthly_effective_pct)",
+                      "expression": "SUM(`selic_monthly_effective_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Latest Monthly SELIC (%)"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(selic_monthly_effective_pct)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "latest-monthly-ipca",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a2274e67",
+                  "fields": [
+                    {
+                      "name": "sum(ipca_monthly_pct)",
+                      "expression": "SUM(`ipca_monthly_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Latest Monthly IPCA (%)"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(ipca_monthly_pct)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 6,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "latest-monthly-real-interest",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a2274e67",
+                  "fields": [
+                    {
+                      "name": "sum(real_interest_monthly_pct)",
+                      "expression": "SUM(`real_interest_monthly_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Latest Monthly Real Interest (%)"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(real_interest_monthly_pct)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 9,
+            "width": 6,
+            "height": 3
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
