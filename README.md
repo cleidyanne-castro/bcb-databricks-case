@@ -218,6 +218,12 @@ The Job fails when any of the following conditions is detected:
 
 These checks are implemented in the modular Python source files and are executed as part of the Databricks Workflow.
 
+## Data Visualization
+
+The dashboard consumes the Gold layer and presents monthly SELIC, IPCA, real interest rate, and 12-month accumulated metrics.
+
+![Interest and Inflation Overview](/Workspace/Users/cleidyannecastro.tech@gmail.com/bcb-databricks-case/evidence/dashboard/BIbcb.png)
+
 ## Workflow
 
 The pipeline is orchestrated through a Databricks Workflow named `beanalytic-bcb-pipeline`.
